@@ -1,0 +1,12 @@
+#ifndef QKRAKENCPP_GLOBAL_H
+#define QKRAKENCPP_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(QKRAKENCPP_LIBRARY)
+#  define QKRAKENCPP_EXPORT Q_DECL_EXPORT
+#else
+#  define QKRAKENCPP_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // QKRAKENCPP_GLOBAL_H
