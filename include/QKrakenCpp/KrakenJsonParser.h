@@ -1,6 +1,6 @@
 #ifndef KRAKENJSONPARSER_H
 #define KRAKENJSONPARSER_H
-#include <Structures.h>
+#include <QKrakenCpp/Structures.h>
 
 #include <QByteArray>
 

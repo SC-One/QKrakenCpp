@@ -12,13 +12,27 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Network Concurrent)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network Concurrent)
 
+set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+file(GLOB_RECURSE HEADER_FILES
+  ${INC_DIR}/*.hpp
+  ${INC_DIR}/*.hxx
+  ${INC_DIR}/*.h
+)
+
+file(GLOB_RECURSE SOURCE_FILES
+  ${SRC_DIR}/*.cpp
+  ${SRC_DIR}/*.cxx
+  ${SRC_DIR}/*.cc
+  ${SRC_DIR}/*.c
+  ${proto_out_srcs}
+)
+
 add_library(${ROOT_PRJ} SHARED
   QKrakenCpp_global.h
-  QKrakenCpp.cpp
-  QKrakenCpp.h
-  TSNetworkManager.h TSNetworkManager.cpp
-  KrakenJsonParser.h KrakenJsonParser.cpp
-  Structures.h
+  ${HEADER_FILES}
+  ${SOURCE_FILES}
 )
 
 target_link_libraries(${ROOT_PRJ} PRIVATE
@@ -26,6 +40,8 @@ target_link_libraries(${ROOT_PRJ} PRIVATE
     Qt${QT_VERSION_MAJOR}::Network
     Qt${QT_VERSION_MAJOR}::Concurrent
 )
-target_include_directories(${ROOT_PRJ} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_compile_definitions(${ROOT_PRJ} PRIVATE QKRAKENCPP_LIBRARY)
+target_include_directories(${ROOT_PRJ} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${INC_DIR}
+)

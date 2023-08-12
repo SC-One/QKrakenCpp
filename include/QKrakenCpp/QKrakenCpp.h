@@ -1,7 +1,7 @@
 #ifndef QKRAKENCPP_H
 #define QKRAKENCPP_H
 
-#include <Structures.h>
+#include <QKrakenCpp/Structures.h>
 
 #include <QFuture>
 #include <QThread>

@@ -1,4 +1,4 @@
-#include "KrakenJsonParser.h"
+#include <QKrakenCpp/KrakenJsonParser.h>
 
 #include <QJsonArray>
 #include <QJsonDocument>

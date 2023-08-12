@@ -1,4 +1,4 @@
-#include "TSNetworkManager.h"
+#include <QKrakenCpp/TSNetworkManager.h>
 
 thread_local QNetworkAccessManager network;
 QNetworkAccessManager &TSNetworkManager::myNetwork() { return network; }

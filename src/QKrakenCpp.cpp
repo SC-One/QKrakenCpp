@@ -1,28 +1,36 @@
-#include "QKrakenCpp.h"
+#include <QKrakenCpp/KrakenJsonParser.h>
+#include <QKrakenCpp/QKrakenCpp.h>
+#include <QKrakenCpp/TSNetworkManager.h>
 
-#include <KrakenJsonParser.h>
-#include <TSNetworkManager.h>
-
+#include <QDebug>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QString>
 #include <QUrl>
 #include <QtConcurrent>
 
-struct ThreadPoolNumInitiator {
+struct CommonWorker {
   static QThreadPool GLOBAL_THREAD_POOL;
 
- public:
-  ThreadPoolNumInitiator(const int num = 10) {
+ private:
+  void operator=(CommonWorker const &other) = delete;
+  CommonWorker(CommonWorker const &other) = delete;
+  CommonWorker() = delete;
+  CommonWorker(const int num = 10) {
     GLOBAL_THREAD_POOL.setMaxThreadCount(num);
+  }
+
+ public:
+  static CommonWorker &globalWorker() {
+    static auto GB_THREAD_POOL = CommonWorker(12);
+    return GB_THREAD_POOL;
   }
   template <typename FUNC>
   auto work(FUNC &&taskFunc) {
     return QtConcurrent::run(&GLOBAL_THREAD_POOL, taskFunc);
   }
 };
-QThreadPool ThreadPoolNumInitiator::GLOBAL_THREAD_POOL = QThreadPool();
-static auto GB_THREAD_POOL = ThreadPoolNumInitiator(12);
+QThreadPool CommonWorker::GLOBAL_THREAD_POOL = QThreadPool();
 
 const QString QKrakenCpp::KRAKEN_REST_API_VERSION_DOC = "1.1.0";
 
@@ -42,7 +50,7 @@ const QUrl QKrakenCpp::PV_URL = QUrl("https://api.kraken.com/0/private/");
 QKrakenCpp::QKrakenCpp() {}
 
 QFuture<Structures::AssetResponse> QKrakenCpp::assets() const {
-  return GB_THREAD_POOL.work([]() -> Structures::AssetResponse {
+  return CommonWorker::globalWorker().work([]() -> Structures::AssetResponse {
     auto &network = TSNetworkManager::myNetwork();
     QNetworkRequest assetRequest(URI_ASSETS);
     assetRequest.setHeader(QNetworkRequest::ContentTypeHeader,
