@@ -9,17 +9,20 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
 
 add_library(${ROOT_PRJ} SHARED
   QKrakenCpp_global.h
   QKrakenCpp.cpp
   QKrakenCpp.h
+  TSNetworkManager.h
+  TSNetworkManager.cpp
 )
 
 target_link_libraries(${ROOT_PRJ} PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Network
 )
 
 target_compile_definitions(${ROOT_PRJ} PRIVATE QKRAKENCPP_LIBRARY)
