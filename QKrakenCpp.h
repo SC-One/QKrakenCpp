@@ -1,6 +1,9 @@
 #ifndef QKRAKENCPP_H
 #define QKRAKENCPP_H
 
+#include <Structures.h>
+
+#include <QFuture>
 #include <QThread>
 #include <QThreadPool>
 #include <QUrl>
@@ -29,6 +32,7 @@ class QKRAKENCPP_EXPORT QKrakenCpp {
 
  public:
   QKrakenCpp();
+  QFuture<Structures::AssetResponse> assets() const;
 };
 
 #endif  // QKRAKENCPP_H
